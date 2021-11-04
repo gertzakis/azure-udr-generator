@@ -1,0 +1,6 @@
+name,location,cidr,type
+makisvnet,hub,10.0.0.0/16,vnet
+makissubnet,hub,10.0.1.0/24,subnet
+makissubnet02,hub,10.0.2.0/24,subnet
+tzakisvnet,spoke,10.1.0.0/16,vnet
+tzakisvnet02,spoke,10.2.0.0/16,vnet
