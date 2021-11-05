@@ -1,5 +1,6 @@
-import json, csv
+import csv
 from pprint import pprint
+from models.data import RouteTable, Route
 
 
 def read_csv_data(data_file):
@@ -22,63 +23,71 @@ def read_csv_data(data_file):
 
 def udr_list(topology_data):
     """For every net/subnet in topology calculates the UDRs and return a full list of UDRs needed.
-    Returns: a Dictionary with key: udr-name, value:list of dictionaries (routes info).
+    Returns: a List with RouteTable objects.
     """
-    udr_diction = {}
+    udr_data = []
 
     for key, value in topology_data.items():
-        udr_data = []
         if not (value["location"] == "hub" and value["type"] == "vnet"):
-            udr_data.append(routes_list(topology_data, key, value))
-            udr_diction[key + "-udr"] = udr_data
+            udr_data.append(
+                RouteTable(key + "-udr", routes_list(topology_data, key, value))
+            )
+        elif value["location"] == "spoke":
+            udr_data.append(
+                RouteTable(key + "-udr", routes_list(topology_data, key, value))
+            )
+        elif value["location"] == "hub" and value["type"] == "subnet":
+            udr_data.append(
+                RouteTable(key + "-udr", routes_list(topology_data, key, value))
+            )
 
-        # if value["location"] == "spoke":
-        #     udr_data.append(routes_list(topology_data, key, value))
-        #     udr_diction[key + "-udr"] = udr_data
-
-        # elif value["location"] == "hub" and value["type"] == "subnet":
-        #     udr_data.append(routes_list(topology_data, key, value))
-        #     udr_diction[key + "-udr"] = udr_data
-
-    return udr_diction
+    return udr_data
 
 
 def routes_list(topology_data, network_name, network_info):
-    """Generated a dictionary of routes for Specific UDR. Every route is a dictionary also.
-    key: route-name
-    values: dict with route info
-    """
-    routes = {}
-    routes["0.0.0.0_0"] = {
-        "dest-subnet": "0.0.0.0/0",
-        "next-hop": "virtual-appliance",
-    }
+    """Generated a list of routes for Specific UDR. Every route is a Route object."""
+    route_list = []
+    route = Route("0.0.0.0_0", "0.0.0.0/0", "VirtualAppliance")
+    route_list.append(route)
+
     for key, value in topology_data.items():
         if key != network_name:
             if network_info["location"] == "hub":
                 if value["location"] == "hub" and value["type"] == "subnet":
-                    routes[value["cidr"].replace("/", "_")] = {
-                        "dest-subnet": value["cidr"],
-                        "next-hop": "virtual-appliance",
-                    }
+                    route_list.append(
+                        Route(
+                            value["cidr"].replace("/", "_"),
+                            value["cidr"],
+                            "VirtualAppliance",
+                        )
+                    )
                 elif value["location"] == "spoke" and value["type"] == "vnet":
-                    routes[value["cidr"].replace("/", "_")] = {
-                        "dest-subnet": value["cidr"],
-                        "next-hop": "virtual-appliance",
-                    }
+                    route_list.append(
+                        Route(
+                            value["cidr"].replace("/", "_"),
+                            value["cidr"],
+                            "VirtualAppliance",
+                        )
+                    )
             else:
                 if value["location"] == "hub" and value["type"] == "vnet":
-                    routes[value["cidr"].replace("/", "_")] = {
-                        "dest-subnet": value["cidr"],
-                        "next-hop": "virtual-appliance",
-                    }
+                    route_list.append(
+                        Route(
+                            value["cidr"].replace("/", "_"),
+                            value["cidr"],
+                            "VirtualAppliance",
+                        )
+                    )
                 elif value["location"] == "spoke" and value["type"] == "vnet":
-                    routes[value["cidr"].replace("/", "_")] = {
-                        "dest-subnet": value["cidr"],
-                        "next-hop": "virtual-appliance",
-                    }
+                    route_list.append(
+                        Route(
+                            value["cidr"].replace("/", "_"),
+                            value["cidr"],
+                            "VirtualAppliance",
+                        )
+                    )
 
-    return routes
+    return route_list
 
 
 def main():
@@ -86,13 +95,13 @@ def main():
     topology_data = read_csv_data(file_location)
     udrs = udr_list(topology_data)
 
-    print(type(udrs))
-    for k, v in udrs.items():
-        print("===============")
-        pprint(k)
-        print("--------")
-        pprint(v)
-        print("--------")
+    for udr in udrs:
+        print("===========")
+        print(f"UDR: '{udr.name}'")
+        print("---------------------------")
+        pprint(udr.routes)
+        print("===========")
+
 
 if __name__ == "__main__":
     main()
