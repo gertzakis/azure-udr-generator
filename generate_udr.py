@@ -28,18 +28,22 @@ def udr_list(topology_data):
 
     for key, value in topology_data.items():
         udr_data = []
-        if value["location"] == "spoke":
-            udr_data.append(routes_list(topology_data, key))
+        if not (value["location"] == "hub" and value["type"] == "vnet"):
+            udr_data.append(routes_list(topology_data, key, value))
             udr_diction[key + "-udr"] = udr_data
 
-        elif value["location"] == "hub" and value["type"] == "subnet":
-            udr_data.append(routes_list(topology_data, key))
-            udr_diction[key + "-udr"] = udr_data
+        # if value["location"] == "spoke":
+        #     udr_data.append(routes_list(topology_data, key, value))
+        #     udr_diction[key + "-udr"] = udr_data
+
+        # elif value["location"] == "hub" and value["type"] == "subnet":
+        #     udr_data.append(routes_list(topology_data, key, value))
+        #     udr_diction[key + "-udr"] = udr_data
 
     return udr_diction
 
 
-def routes_list(topology_data, network_name):
+def routes_list(topology_data, network_name, network_info):
     """Generated a dictionary of routes for Specific UDR. Every route is a dictionary also.
     key: route-name
     values: dict with route info
@@ -51,16 +55,29 @@ def routes_list(topology_data, network_name):
     }
     for key, value in topology_data.items():
         if key != network_name:
-            if value["location"] == "spoke" and value["type"] != "subnet":
-                routes[value["cidr"].replace("/", "_")] = {
-                    "dest-subnet": value["cidr"],
-                    "next-hop": "virtual-appliance",
-                }
-            elif value["location"] == "hub" and value["type"] == "subnet":
-                routes[value["cidr"].replace("/", "_")] = {
-                    "dest-subnet": value["cidr"],
-                    "next-hop": "virtual-appliance",
-                }
+            if network_info["location"] == "hub":
+                if value["location"] == "hub" and value["type"] == "subnet":
+                    routes[value["cidr"].replace("/", "_")] = {
+                        "dest-subnet": value["cidr"],
+                        "next-hop": "virtual-appliance",
+                    }
+                elif value["location"] == "spoke" and value["type"] == "vnet":
+                    routes[value["cidr"].replace("/", "_")] = {
+                        "dest-subnet": value["cidr"],
+                        "next-hop": "virtual-appliance",
+                    }
+            else:
+                if value["location"] == "hub" and value["type"] == "vnet":
+                    routes[value["cidr"].replace("/", "_")] = {
+                        "dest-subnet": value["cidr"],
+                        "next-hop": "virtual-appliance",
+                    }
+                elif value["location"] == "spoke" and value["type"] == "vnet":
+                    routes[value["cidr"].replace("/", "_")] = {
+                        "dest-subnet": value["cidr"],
+                        "next-hop": "virtual-appliance",
+                    }
+
     return routes
 
 

@@ -14,4 +14,3 @@ create-udr.py will also do the necessary changes on the Azure subscription. stil
 Still don't know if i go with python-sdk or fallback to the good old http request
 
 
-
