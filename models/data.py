@@ -5,7 +5,8 @@ from typing import List
 class Route:
     name: str
     dest_subnet: str
-    next_hop: str
+    next_hop_type: str
+    next_hop_ip: str
 
 @dataclass
 class RouteTable:
