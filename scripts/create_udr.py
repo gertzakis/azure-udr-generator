@@ -18,7 +18,7 @@ FILE_LOCATION = "/home/memos/Projects/azure-udr-generator/data.csv"
 # CONSTANTS
 
 topology_data = read_csv_data(FILE_LOCATION)
-udrs = udr_list(topology_data)
+udrs = udr_list(topology_data, FW_IP_ADDRESS)
 
 # Acquire a credential object using CLI-based authentication.
 credential = AzureCliCredential()
@@ -45,8 +45,8 @@ def create_route(udr_name, route):
         route.name,
         {
             "address_prefix": route.dest_subnet,
-            "next_hop_type": route.next_hop,
-            "next_hop_ip_address": FW_IP_ADDRESS,
+            "next_hop_type": route.next_hop_type,
+            "next_hop_ip_address": route.next_hop_ip,
         },
     ).result()
 

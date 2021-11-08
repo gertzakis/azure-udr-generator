@@ -11,6 +11,4 @@ generate-udr.py generates and prints the UDRs that should be implemented in Azur
 
 create-udr.py will also do the necessary changes on the Azure subscription. still work in progress because python azure-sdk documentation is too convoluted. 
 
-Still don't know if i go with python-sdk or fallback to the good old http request
-
 
