@@ -11,6 +11,6 @@ generate_udr.py generates and prints the UDRs that should be implemented in Azur
 
 create_udr.py will also do the necessary changes on the Azure subscription. still work in progress because python azure-sdk documentation is too convoluted. 
 
-generate_tf.py generates terraform file in tf_files dir, in order to be implemented in an IaC solution. 
+generate_tf.py generates terraform file with RouteTables (UDRs) in tf_files dir, in order to be implemented in an IaC solution. 
 
 
