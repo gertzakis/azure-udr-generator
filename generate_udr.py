@@ -1,6 +1,7 @@
-import csv
+import csv, sys
 from pprint import pprint
 from models.data import RouteTable, Route
+from generate_tf import load_template, generate_config
 from funcy import omit
 
 
@@ -25,7 +26,8 @@ def read_csv_data(data_file: str) -> dict:
                     key: value for key, value in zip(headers, row[1:])
                 }
     except IOError:
-        print("cannot open file")
+        print(f"cannot open file {data_file}")
+        sys.exit(1)
     return topology_data
 
 
@@ -99,7 +101,7 @@ def routes_list(topology_data: dict, src_location: str, fw_ip_address: str) -> l
                     dst["cidr"].replace("/", "_"),
                     dst["cidr"],
                     "VirtualAppliance",
-                    fw_ip_address
+                    fw_ip_address,
                 )
             )
 
@@ -111,6 +113,8 @@ def main():
     fw_ip_address = "10.0.1.4"
     topology_data = read_csv_data(file_location)
     udrs = udr_list(topology_data, fw_ip_address)
+    template = load_template("templates/tf_route_table.j2")
+    tf_file = "tf_files/routeTables.tf"
 
     for udr in udrs:
         print("===========")
@@ -119,6 +123,7 @@ def main():
         pprint(udr.routes)
         print("===========")
 
+    generate_config(template=template, udrs=udrs, tf_file=tf_file)
 
 if __name__ == "__main__":
     main()
