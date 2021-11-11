@@ -4,11 +4,12 @@ Generating UDRs for vNets & subnets in order to pass the traffic from Hub vNet N
 
 The Network Topology should be inserted into data.csv
 
-generate-udr.py generates and prints the UDRs that should be implemented in Azure.
+generate_udr.py generates and prints the UDRs that should be implemented in Azure.
 
 * UDRs for every Hub subnet with routes to other Hub-subnets and Spoke-vNets.
 * UDRs for every Spoke-vNet, with routes pointing to other vNets (no intersubnet routing inside the Spokes)
 
-create-udr.py will also do the necessary changes on the Azure subscription. still work in progress because python azure-sdk documentation is too convoluted. 
+create_udr.py will also do the necessary changes on the Azure subscription. still work in progress because python azure-sdk documentation is too convoluted. 
 
+generate_tf.py generates terraform file in tf_files, in order to be implemented in an IaC solution. 
 
