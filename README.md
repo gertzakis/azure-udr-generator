@@ -14,3 +14,14 @@ create_udr.py will also do the necessary changes on the Azure subscription. stil
 generate_tf.py generates terraform file with RouteTables (UDRs) in tf_files dir, in order to be implemented in an IaC solution. 
 
 
+## Usage examples
+Only with gateway IP, it will use data.csv and routeTables.tf file:
+
+`python3 generate_udr.py -g <GATEWAY_IP>`
+
+
+With csv & tf specified:
+
+`python3 generate_udr.py -g <GATEWAY_IP> -f <CSV_FILE>`
+
+`python3 generate_udr.py -g <GATEWAY_IP> -f <CSV_FILE> -tf <TERRAFORM_FILE>`  
