@@ -1,4 +1,4 @@
-import csv, sys
+import csv, sys, argparse
 from pprint import pprint
 from models.data import RouteTable, Route
 from generate_tf import load_template, generate_config
@@ -109,12 +109,13 @@ def routes_list(topology_data: dict, src_location: str, fw_ip_address: str) -> l
 
 
 def main():
-    file_location = "./data.csv"
-    fw_ip_address = "10.0.1.4"
+    file_location = args.file
+    fw_ip_address = args.gateway
+    tf_file = args.tf_file
+
     topology_data = read_csv_data(file_location)
     udrs = udr_list(topology_data, fw_ip_address)
     template = load_template("templates/tf_route_table.j2")
-    tf_file = "tf_files/routeTables.tf"
 
     for udr in udrs:
         print("===========")
@@ -125,5 +126,35 @@ def main():
 
     generate_config(template=template, udrs=udrs, tf_file=tf_file)
 
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Generate udr and terraform file to implement them based on csv data"
+    )
+
+    parser.add_argument(
+        "-f",
+        "--file",
+        type=str,
+        required=False,
+        default="./data.csv",
+        help="CSV file with the necessary data (name,location,cidr,type). Default: './data.csv'",
+    )
+    parser.add_argument(
+        "-g",
+        "--gateway",
+        type=str,
+        required=True,
+        help="IP address of the default gateway (firewall NVA)",
+    )
+    parser.add_argument(
+        "-tf",
+        "--tf_file",
+        type=str,
+        required=False,
+        default="tf_files/routeTables.tf",
+        help="Destination file to generate tf config.",
+    )
+
+    args = parser.parse_args()
     main()

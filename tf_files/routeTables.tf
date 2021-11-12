@@ -8,25 +8,25 @@ resource "azurerm_route_table" "makissubnet-udr" {
     name           = "0.0.0.0_0"
     address_prefix = "0.0.0.0/0"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.0.2.0_24"
     address_prefix = "10.0.2.0/24"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.1.0.0_16"
     address_prefix = "10.1.0.0/16"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.2.0.0_16"
     address_prefix = "10.2.0.0/16"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
 }
 resource "azurerm_route_table" "makissubnet02-udr" {
@@ -38,25 +38,25 @@ resource "azurerm_route_table" "makissubnet02-udr" {
     name           = "0.0.0.0_0"
     address_prefix = "0.0.0.0/0"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.0.1.0_24"
     address_prefix = "10.0.1.0/24"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.1.0.0_16"
     address_prefix = "10.1.0.0/16"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.2.0.0_16"
     address_prefix = "10.2.0.0/16"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
 }
 resource "azurerm_route_table" "tzakisvnet-udr" {
@@ -68,19 +68,19 @@ resource "azurerm_route_table" "tzakisvnet-udr" {
     name           = "0.0.0.0_0"
     address_prefix = "0.0.0.0/0"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.0.0.0_16"
     address_prefix = "10.0.0.0/16"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.2.0.0_16"
     address_prefix = "10.2.0.0/16"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
 }
 resource "azurerm_route_table" "tzakisvnet02-udr" {
@@ -92,18 +92,18 @@ resource "azurerm_route_table" "tzakisvnet02-udr" {
     name           = "0.0.0.0_0"
     address_prefix = "0.0.0.0/0"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.0.0.0_16"
     address_prefix = "10.0.0.0/16"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
   route {
     name           = "10.1.0.0_16"
     address_prefix = "10.1.0.0/16"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = "10.0.1.4"
+    next_hop_in_ip_address = "10.10.0.1"
   }
 }
