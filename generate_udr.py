@@ -1,10 +1,12 @@
 import csv, sys, argparse
+from os import path
 from pprint import pprint
 from models.data import RouteTable, Route
 from generate_tf import load_template, generate_config
 from funcy import omit
+from tools import log
 
-
+@log.log()
 def read_csv_data(data_file: str) -> dict:
     """read_csv_data reads a CSV file into a dictionary
 
@@ -30,7 +32,7 @@ def read_csv_data(data_file: str) -> dict:
         sys.exit(1)
     return topology_data
 
-
+@log.log()
 def udr_list(topology_data: dict, fw_ip_address: str) -> list:
     """udr_list calculates and returns the UDRs needed for the given data
 
@@ -42,7 +44,6 @@ def udr_list(topology_data: dict, fw_ip_address: str) -> list:
         list: List of RouteTable objects
     """
     udr_data = []
-
     for key, value in topology_data.items():
         if (value["location"] == "hub" and value["type"] == "subnet") or (
             value["location"] == "spoke"
@@ -58,7 +59,7 @@ def udr_list(topology_data: dict, fw_ip_address: str) -> list:
 
     return udr_data
 
-
+@log.log()
 def routes_list(topology_data: dict, src_location: str, fw_ip_address: str) -> list:
     """routes_list generates a list of routes (Route objects) for specific UDR.
 
@@ -107,7 +108,7 @@ def routes_list(topology_data: dict, src_location: str, fw_ip_address: str) -> l
 
     return route_list
 
-
+@log.log()
 def main():
     file_location = args.file
     fw_ip_address = args.gateway
@@ -144,7 +145,8 @@ if __name__ == "__main__":
         "-g",
         "--gateway",
         type=str,
-        required=True,
+        required=False,
+        default="10.10.10.1",
         help="IP address of the default gateway (firewall NVA)",
     )
     parser.add_argument(
