@@ -34,7 +34,7 @@ def log(path="./tools/log.error.log", debug=False):
         debug (bool, optional): Defaults to False.
 
     Returns:
-        [type]: [description]
+        degorator: error_log
     """
 
     def error_log(func):
@@ -44,15 +44,13 @@ def log(path="./tools/log.error.log", debug=False):
                 # if debug enabled, log everything on debug.log file.
                 if debug:
                     logger = _generate_log(path.replace("error", "debug"), logging.DEBUG)
-                    error_msg = (
-                        " Debug message originated from / " + func.__name__ + "\n"
-                    )
+                    error_msg = " Debug message originated from / " + func.__name__ + "\n"
                     logger.debug(error_msg)
                 return func(*args, **kwargs)
             except Exception as e:
                 # If it throws an error `Exception` will be called.
                 logger = _generate_log(path, logging.ERROR)
-                error_msg = "Error has occurred at / " + func.__name__ + "\n"
+                error_msg = " Error has occurred at / " + func.__name__ + "\n"
                 logger.exception(error_msg)
 
                 return e  # Or whatever message you want.
