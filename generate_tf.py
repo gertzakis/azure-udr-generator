@@ -16,6 +16,7 @@ def load_template(template_file):
         sys.exit(1)
     return template
 
+
 def generate_config(template: jinja2, udrs: list, tf_file: str):
     """Generates config file"""
 
@@ -27,4 +28,3 @@ def generate_config(template: jinja2, udrs: list, tf_file: str):
         print(f"Could not write {tf_file}")
         print(f"I/O error { ex.errno } '{ ex.strerror }'")
         sys.exit(3)
-

@@ -10,7 +10,7 @@ The Network Topology should be inserted into CSV file (default: data.csv), with 
 * UDRs for every Spoke-vNet, with routes pointing to other vNets (no intersubnet routing inside the Spokes).
 * generates terraform file with RouteTables (UDRs) in tf_files dir, in order to be implemented in an IaC solution.
 
-`create_udr.py` will also do the necessary changes on the Azure subscription. still **work in progress** because python azure-sdk documentation is too convoluted. 
+`create_udr.py` will also do the necessary changes on the Azure subscription. still **work in progress** because python azure-sdk documentation is too convoluted.
 
 
 ## Usage examples
@@ -23,4 +23,4 @@ With csv & tf files specified:
 
 `python3 generate_udr.py -g <GATEWAY_IP> -f <CSV_FILE>`
 
-`python3 generate_udr.py -g <GATEWAY_IP> -f <CSV_FILE> -tf <TERRAFORM_FILE>`  
+`python3 generate_udr.py -g <GATEWAY_IP> -f <CSV_FILE> -tf <TERRAFORM_FILE>`

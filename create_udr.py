@@ -26,6 +26,7 @@ credential = AzureCliCredential()
 # Obtain the management object for networks
 network_client = NetworkManagementClient(credential, subscription_id)
 
+
 def create_route_tables(udr):
     """Creates Route Table"""
     result = network_client.route_tables.begin_create_or_update(
@@ -57,11 +58,10 @@ for udr in udrs:
     # Provision Route table and wait for completion
     route_table_result = create_route_tables(udr)
     print(f"Provisioned Route Table: {route_table_result.name}")
-    
+
 for udr in udrs:
-    # Iterate through all routes of table    
+    # Iterate through all routes of table
     for route in udr.routes:
         # Provision route and wait for completion
         route_result = create_route(udr.name, route)
         print(f"Provisioned route '{route_result.name}' on route table '{udr.name}'")
-

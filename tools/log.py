@@ -10,7 +10,7 @@ def _generate_log(path, log_level):
         log_level (logging.level): Level of logging, ERROR/DEBUG
 
     Returns:
-        Logger object: the logger object to log. 
+        Logger object: the logger object to log.
     """
     # Create a logger and set the level.
     logger = logging.getLogger("LogError")
@@ -27,7 +27,7 @@ def _generate_log(path, log_level):
 
 
 def log(path="./tools/log.error.log", debug=False):
-    """Parent function to take arguments. 
+    """Parent function to take arguments.
 
     Args:
         path (str, optional): Defaults to "./tools/log.error.log".
@@ -43,8 +43,12 @@ def log(path="./tools/log.error.log", debug=False):
             try:
                 # if debug enabled, log everything on debug.log file.
                 if debug:
-                    logger = _generate_log(path.replace("error", "debug"), logging.DEBUG)
-                    error_msg = " Debug message originated from / " + func.__name__ + "\n"
+                    logger = _generate_log(
+                        path.replace("error", "debug"), logging.DEBUG
+                    )
+                    error_msg = (
+                        " Debug message originated from / " + func.__name__ + "\n"
+                    )
                     logger.debug(error_msg)
                 return func(*args, **kwargs)
             except Exception as e:
@@ -58,4 +62,3 @@ def log(path="./tools/log.error.log", debug=False):
         return wrapper
 
     return error_log
-

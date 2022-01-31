@@ -6,6 +6,7 @@ from generate_tf import load_template, generate_config
 from funcy import omit
 from tools import log
 
+
 @log.log()
 def read_csv_data(data_file: str) -> dict:
     """read_csv_data reads a CSV file into a dictionary
@@ -31,6 +32,7 @@ def read_csv_data(data_file: str) -> dict:
         print(f"cannot open file {data_file}")
         sys.exit(1)
     return topology_data
+
 
 @log.log()
 def udr_list(topology_data: dict, fw_ip_address: str) -> list:
@@ -58,6 +60,7 @@ def udr_list(topology_data: dict, fw_ip_address: str) -> list:
             )
 
     return udr_data
+
 
 @log.log()
 def routes_list(topology_data: dict, src_location: str, fw_ip_address: str) -> list:
@@ -107,6 +110,7 @@ def routes_list(topology_data: dict, src_location: str, fw_ip_address: str) -> l
             )
 
     return route_list
+
 
 @log.log()
 def main():
