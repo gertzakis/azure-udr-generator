@@ -1,9 +1,10 @@
-import logging, os
+"""Log initializer functions for using as decorators."""
 import functools
+import logging
 
 
 def _generate_log(path, log_level):
-    """Creates a logger object with specific attributes.
+    """Create a logger object with specific attributes.
 
     Args:
         path (str): File to log

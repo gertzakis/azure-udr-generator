@@ -1,8 +1,10 @@
-from pprint import pprint
+"""Create UDRs and Routes on Azure using Azure SDK."""
+import os
+
 from azure.identity import AzureCliCredential
 from azure.mgmt.network import NetworkManagementClient
+
 from generate_udr import read_csv_data, udr_list
-import os
 
 # Retrieve subscription ID from environment variable.
 subscription_id = os.environ["AZURE_SUBSCRIPTION_ID"]
@@ -27,27 +29,27 @@ credential = AzureCliCredential()
 network_client = NetworkManagementClient(credential, subscription_id)
 
 
-def create_route_tables(udr):
-    """Creates Route Table"""
+def create_route_tables(udr_table):
+    """Create Route Table."""
     result = network_client.route_tables.begin_create_or_update(
         RESOURCE_GROUP_NAME,
-        udr.name,
+        udr_table.name,
         {"location": LOCATION, "disable_bgp_route_propagation": True},
     ).result()
 
     return result
 
 
-def create_route(udr_name, route):
-    """Create Route on a specific UDR"""
+def create_routes(udr_name, udr_route):
+    """Create Route on a specific UDR."""
     result = network_client.routes.begin_create_or_update(
         RESOURCE_GROUP_NAME,
         udr_name,
-        route.name,
+        udr_route.name,
         {
-            "address_prefix": route.dest_subnet,
-            "next_hop_type": route.next_hop_type,
-            "next_hop_ip_address": route.next_hop_ip,
+            "address_prefix": udr_route.dest_subnet,
+            "next_hop_type": udr_route.next_hop_type,
+            "next_hop_ip_address": udr_route.next_hop_ip,
         },
     ).result()
 
@@ -63,5 +65,5 @@ for udr in udrs:
     # Iterate through all routes of table
     for route in udr.routes:
         # Provision route and wait for completion
-        route_result = create_route(udr.name, route)
+        route_result = create_routes(udr.name, route)
         print(f"Provisioned route '{route_result.name}' on route table '{udr.name}'")
