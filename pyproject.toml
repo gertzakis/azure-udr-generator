@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "azure-udr-generator"
+version = "0.1.0"
+description = "Generates Azure UDRs from csv file"
+authors = ["gertzakis <gertzakis@gmail.com>"]
+license = "Apache"
+readme = "README.md"
+packages = [{include = "azure_udr_generator"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Jinja2 = "^3.1.2"
+funcy = "^1.17"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+flake8 = "^5.0.4"
+pydocstyle = "^6.1.1"
+bandit = "^1.7.4"
+pylint = "^2.15.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
