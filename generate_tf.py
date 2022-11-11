@@ -1,15 +1,16 @@
+"""Generate tf configuration file based on Jinja2 template."""
 import sys
-from jinja2 import Template
+
 import jinja2
-from models.data import RouteTable
+from jinja2 import Template
 
 
 def load_template(template_file):
-    """Loads Jinja2 template from file"""
+    """Load Jinja2 template from file."""
     try:
         print(f"Loading jinja template { template_file }")
-        with open(template_file) as t:
-            template = Template(t.read())
+        with open(template_file, encoding="utf-8") as t_file:
+            template = Template(t_file.read())
     except IOError as ex:
         print(f"Template file { template_file} could not be opened!")
         print(f"I/O error { ex.errno } '{ ex.strerror }'")
@@ -18,12 +19,11 @@ def load_template(template_file):
 
 
 def generate_config(template: jinja2, udrs: list, tf_file: str):
-    """Generates config file"""
-
-    print(f"Generating terraform file!")
+    """Generate config file."""
+    print("Generating terraform file!")
     try:
-        with open(tf_file, "w") as f:
-            f.write(template.render(data=udrs))
+        with open(tf_file, "w", encoding="utf-8") as conf_file:
+            conf_file.write(template.render(data=udrs))
     except IOError as ex:
         print(f"Could not write {tf_file}")
         print(f"I/O error { ex.errno } '{ ex.strerror }'")

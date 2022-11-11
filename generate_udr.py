@@ -1,15 +1,19 @@
-import csv, sys, argparse
-from os import path
+"""Generate the necessary UDRs and Routes based on the csv data and create the tf templates."""
+import argparse
+import csv
+import sys
 from pprint import pprint
-from models.data import RouteTable, Route
-from generate_tf import load_template, generate_config
+
 from funcy import omit
+
+from generate_tf import generate_config, load_template
+from models.data import Route, RouteTable
 from tools import log
 
 
 @log.log()
 def read_csv_data(data_file: str) -> dict:
-    """read_csv_data reads a CSV file into a dictionary
+    """Read a CSV file into a dictionary.
 
     Args:
         data_file (str): filename of the CSV file
@@ -18,7 +22,7 @@ def read_csv_data(data_file: str) -> dict:
         dict: Structured representation (dict of dicts) with Azure networks info
     """
     try:
-        with open(data_file, "r") as csv_file:
+        with open(data_file, "r", encoding="utf-8") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=",")
 
             # Populate dictionary using headers as keys
@@ -36,7 +40,7 @@ def read_csv_data(data_file: str) -> dict:
 
 @log.log()
 def udr_list(topology_data: dict, fw_ip_address: str) -> list:
-    """udr_list calculates and returns the UDRs needed for the given data
+    """udr_list calculates and returns the UDRs needed for the given data.
 
     Args:
         topology_data (dict): Dictionary that contains Azure networks info
@@ -74,7 +78,6 @@ def routes_list(topology_data: dict, src_location: str, fw_ip_address: str) -> l
     Returns:
         list: [description]
     """
-
     route_list = [Route("0.0.0.0_0", "0.0.0.0/0", "VirtualAppliance", fw_ip_address)]
 
     for dst in topology_data.values():
@@ -114,6 +117,7 @@ def routes_list(topology_data: dict, src_location: str, fw_ip_address: str) -> l
 
 @log.log()
 def main():
+    """Entrypoint of tool."""
     file_location = args.file
     fw_ip_address = args.gateway
     tf_file = args.tf_file
