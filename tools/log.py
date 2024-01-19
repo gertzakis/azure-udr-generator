@@ -44,12 +44,8 @@ def log(path="./tools/log.error.log", debug=False):
             try:
                 # if debug enabled, log everything on debug.log file.
                 if debug:
-                    logger = _generate_log(
-                        path.replace("error", "debug"), logging.DEBUG
-                    )
-                    error_msg = (
-                        " Debug message originated from / " + func.__name__ + "\n"
-                    )
+                    logger = _generate_log(path.replace("error", "debug"), logging.DEBUG)
+                    error_msg = " Debug message originated from / " + func.__name__ + "\n"
                     logger.debug(error_msg)
                 return func(*args, **kwargs)
             except Exception as e:

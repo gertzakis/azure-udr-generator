@@ -11,7 +11,7 @@ def load_template(template_file):
         print(f"Loading jinja template { template_file }")
         with open(template_file, encoding="utf-8") as t_file:
             template = Template(t_file.read())
-    except IOError as ex:
+    except OSError as ex:
         print(f"Template file { template_file} could not be opened!")
         print(f"I/O error { ex.errno } '{ ex.strerror }'")
         sys.exit(1)
@@ -24,7 +24,7 @@ def generate_config(template: jinja2, udrs: list, tf_file: str):
     try:
         with open(tf_file, "w", encoding="utf-8") as conf_file:
             conf_file.write(template.render(data=udrs))
-    except IOError as ex:
+    except OSError as ex:
         print(f"Could not write {tf_file}")
         print(f"I/O error { ex.errno } '{ ex.strerror }'")
         sys.exit(3)
