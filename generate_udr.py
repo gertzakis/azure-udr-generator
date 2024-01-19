@@ -1,4 +1,4 @@
-"""Generate the necessary UDRs and Routes based on the csv data and create the tf templates."""
+"""Generate the necessary UDRs & Routes based on csv data and create the tf templates."""
 import argparse
 import csv
 import sys
@@ -22,7 +22,7 @@ def read_csv_data(data_file: str) -> dict:
         dict: Structured representation (dict of dicts) with Azure networks info
     """
     try:
-        with open(data_file, "r", encoding="utf-8") as csv_file:
+        with open(data_file, encoding="utf-8") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=",")
 
             # Populate dictionary using headers as keys
@@ -32,7 +32,7 @@ def read_csv_data(data_file: str) -> dict:
                 topology_data[row[0]] = {
                     key: value for key, value in zip(headers, row[1:])
                 }
-    except IOError:
+    except OSError:
         print(f"cannot open file {data_file}")
         sys.exit(1)
     return topology_data
@@ -147,7 +147,9 @@ if __name__ == "__main__":
         type=str,
         required=False,
         default="./data.csv",
-        help="CSV file with the necessary data (name,location,cidr,type). Default: './data.csv'",
+        help="""
+        CSV file with the necessary data (name,location,cidr,type). Default: './data.csv'
+        """,
     )
     parser.add_argument(
         "-g",
